@@ -2,9 +2,12 @@ import { Action } from "../middleware/actions";
 
 export const userAuth = {
     login: (action: Action) => {
-        const name = action.payload.displayName;
-        if (name) {
-            console.log(`User ${name} logged`)
+       
+        if (action.payload) {
+            console.log(`User ${action.payload.displayName} logged`)
+        }
+        else{
+            console.log("No user logged")
         }
     }
 }

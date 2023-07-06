@@ -7,24 +7,25 @@ import { Authenticator } from "./authenticator";
 
 const appContext = createContext<[State, React.Dispatch<Action>]>([
     initialState,
-    () => {}
-]);
-
-export const ContextProvider: FC<PropsWithChildren> = ({children}) => {
+    () => {},
+  ]);
+  
+  export const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [state, setState] = useReducer(reducer, initialState);
 
     const dispatch = (value: Action) => {
-        setState(value)
-        executeCore(value)
+        setState(value);
+        executeCore(value);
     }
-
-    return (<appContext.Provider value={[state, dispatch]}>
+  
+    return (
+      <appContext.Provider value={[state, dispatch]}>
         <Authenticator/>
         {children}
-        </appContext.Provider>
-        )
-}
-
-export const useAppContext = () => {
-    return useContext(appContext)
-}
+      </appContext.Provider>
+    );
+  };
+  
+  export const useAppContext = () => {
+    return useContext(appContext);
+  };

@@ -6,7 +6,7 @@ let authInitialized = false;
 
 export const Authenticator: FC = () => {
     const auth = getAuth();
-    const dispatch = useAppContext()[1];
+    const dispatch = useAppContext()[1]; //same as const [state, dispatch] = useAppContext();
 
     const listenToAuthChanges = () => { //called when user authenticates to firebase
         onAuthStateChanged(auth, (foundUser) => {
