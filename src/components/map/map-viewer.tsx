@@ -32,7 +32,7 @@ export const MapViewer: FC = () => {
     return (
         <>
             <Button onClick={onLogout}>Log out</Button>
-            <div className= "full_screen" ref= {canvasRef}/>
+            <div className= "full-screen" ref= {canvasRef}/>
         </>
         )
 } //FC type - functional component
