@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { BuildingViewer } from "./components/building-viewer";
-import { MapViewer } from "./components/map-viewer";
+import { BuildingViewer } from "./components/building/building-viewer";
+import { MapViewer } from "./components/map/map-viewer";
 import { LoginForm } from "./components/user/login-form";
 import { ContextProvider } from "./middleware/context-provider";
 

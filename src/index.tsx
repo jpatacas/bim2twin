@@ -4,7 +4,7 @@ import App from './App';
 
 import {initializeApp} from 'firebase/app';
 
-import { firebaseConfig } from './firebase-conf';
+import { firebaseConfig } from './config';
 
 import "@fontsource/roboto/300.css"
 import "@fontsource/roboto/400.css"

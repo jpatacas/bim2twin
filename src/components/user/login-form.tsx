@@ -1,7 +1,7 @@
 import { FC } from "react"; //to define a component
 import { useAppContext } from "../../middleware/context-provider";
-import { type } from "os";
 import { Button } from "@mui/material";
+import { Navigate } from "react-router-dom";
 //import {getApp} from "firebase/app"
 
 export const LoginForm: FC = () => {
@@ -13,20 +13,13 @@ export const LoginForm: FC = () => {
 
   };
 
-  const onLogout = () => {
-    dispatch({type: "LOGOUT"})
+  if (state.user) {
+    return <Navigate to="/map"/>
   }
 
   return (
     <h1>
-      {state.user ? (
-        <>
-        <p>{state.user.displayName}</p>
-        <Button variant= "outlined" onClick={onLogout}>Log out</Button>
-        </>
-      ) : (
         <Button variant= "outlined"  onClick={onLogin}>Login</Button>
-      )}
     </h1>
   );
 }; //FC type - functional component
