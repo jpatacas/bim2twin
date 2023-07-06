@@ -1,6 +1,7 @@
 import { FC } from "react"; //to define a component
 import { useAppContext } from "../../middleware/context-provider";
 import { type } from "os";
+import { Button } from "@mui/material";
 //import {getApp} from "firebase/app"
 
 export const LoginForm: FC = () => {
@@ -21,10 +22,10 @@ export const LoginForm: FC = () => {
       {state.user ? (
         <>
         <p>{state.user.displayName}</p>
-        <button onClick={onLogout}>Log out</button>
+        <Button variant= "outlined" onClick={onLogout}>Log out</Button>
         </>
       ) : (
-        <button onClick={onLogin}>Login</button>
+        <Button variant= "outlined"  onClick={onLogin}>Login</Button>
       )}
     </h1>
   );
