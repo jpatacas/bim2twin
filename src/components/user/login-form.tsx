@@ -7,15 +7,22 @@ export const LoginForm: FC = () => {
   const [state, dispatch] = useAppContext();
 
   const onLogin = () => {
-    console.log("Logging in!");
+   // console.log("Logging in!");
     dispatch({type: "LOGIN"});
-    
+
   };
+
+  const onLogout = () => {
+    dispatch({type: "LOGOUT"})
+  }
 
   return (
     <h1>
       {state.user ? (
+        <>
         <p>{state.user.displayName}</p>
+        <button onClick={onLogout}>Log out</button>
+        </>
       ) : (
         <button onClick={onLogin}>Login</button>
       )}
