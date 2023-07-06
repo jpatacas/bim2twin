@@ -6,6 +6,9 @@ import {initializeApp} from 'firebase/app';
 
 import { firebaseConfig } from './firebase-conf';
 
+// import * as dotenv from "dotenv";
+// console.log(dotenv.config())
+
 // const firebaseConfig = {
 //   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
 //   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
