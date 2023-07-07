@@ -1,38 +1,59 @@
-import {FC, useRef, useEffect} from "react"; //to define a component
+import { FC, useRef, useEffect, useState } from "react"; //to define a component
 import { useAppContext } from "../../middleware/context-provider";
 import { Navigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import "./map-viewer.css"
 
 export const MapViewer: FC = () => {
+  const containerRef = useRef(null); //canvas where mapbox scene will be rendered
+  const [isCreating, setIsCreating] = useState(false);
 
-    const [state, dispatch] = useAppContext()
-    const canvasRef = useRef(null) //canvas where mapbox scene will be rendered
+  const [state, dispatch] = useAppContext();
+  const { user } = state;
 
-    //when component starts
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (canvas && state.user) {
-            dispatch({type: "START_MAP", payload: canvas})
-        }
+  const onToggleCreate = () => {
+    setIsCreating(!isCreating);
+  };
 
-        //called when component is destroyed
-        return () => {
-            dispatch({type: "REMOVE_MAP"})
-        }
-    }, [])
+  const onCreate = () => {
+    if (isCreating) {
+      dispatch({ type: "ADD_BUILDING", payload: user });
+      setIsCreating(false);
+    }
+  };
 
-    if (!state.user) {
-        return <Navigate to= "/login" />
+  //when component starts
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container && user) {
+      dispatch({ type: "START_MAP", payload: { container, user } }); // need user to load all buildings that belong to this user
     }
 
-    const onLogout = () => {
-        dispatch ({type: "LOGOUT"})
-    }
+    //called when component is destroyed
+    return () => {
+      dispatch({ type: "REMOVE_MAP" });
+    };
+  }, []);
 
-    return (
-        <>
-            <Button onClick={onLogout}>Log out</Button>
-            <div className= "full-screen" ref= {canvasRef}/>
-        </>
-        )
-} //FC type - functional component
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  const onLogout = () => {
+    dispatch({ type: "LOGOUT" });
+  };
+
+  return (
+    <>
+      <div onContextMenu={onCreate} className="full-screen" ref={containerRef} />
+      {isCreating && (
+        <div className="overlay">
+          <p>Right click to create a new Building or</p>
+          <Button onClick={onToggleCreate}>cancel</Button>
+        </div>
+      )}
+      <Button onClick={onToggleCreate}>Create building</Button>
+      <Button onClick={onLogout}>Log out</Button>
+    </>
+  );
+}; //FC type - functional component
