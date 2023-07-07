@@ -5,12 +5,16 @@ export interface GisParameters {
     pitch: number;
     center: [number,number];
     bearing: number;
-    buildings: GisBuilding[];
+    buildings: Building[];
 }
 
-export interface GisBuilding {
-    id: string;
+export interface Building {
+    uid: string;
     lat: number;
     lng: number;
-    htmlElement: HTMLElement;
+}
+
+export interface LngLat {
+    lng: number;
+    lat: number;
 }

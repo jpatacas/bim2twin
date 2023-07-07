@@ -10,3 +10,17 @@
     height:100vh;
     position: absolute;
 }
+
+.thumbnail {
+    background: rgba(230, 230, 230, 0.7);
+    padding: 10px;
+    border-radius: 100%;
+    border: 5px solid white;
+    pointer-events: all;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.thumbnail:hover{
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+}

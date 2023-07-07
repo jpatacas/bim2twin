@@ -2,21 +2,76 @@ import * as OBC from "openbim-components";
 import * as MAPBOX from "mapbox-gl";
 import * as THREE from "three";
 import { MAPBOX_KEY } from "../../config";
-import { GisParameters } from "../../types";
+import { Building, GisParameters , LngLat} from "../../types";
+import { User } from "firebase/auth";
+import { CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer";
 
 export class MapScene {
     private components = new OBC.Components();
     private readonly style = "mapbox://styles/mapbox/light-v10"
+    private map: MAPBOX.Map;
+    private center: LngLat = {lat: 0, lng: 0}
+    private clickedCoordinates: LngLat = {lat: 0, lng: 0}
+    private labels: {[id:string]: CSS2DObject} = {}
 
     constructor(container: HTMLDivElement) {
         const configuration = this.getConfig(container);
+        this.map = this.createMap(configuration)
         this.initializeComponenents(configuration)
         this.setupScene()
     }
 
     dispose() {
         this.components.dispose();
+        (this.map as any) = null;
         (this.components as any) = null;
+        for (const id in this.labels) {
+            const label = this.labels[id]
+            label.removeFromParent()
+            label.element.remove()
+        }
+        this.labels = {}
+    }
+
+    addBuilding(user: User) {
+        const {lat, lng} = this.clickedCoordinates;
+        const userID = user.uid;
+        const building = {userID, lat, lng, uid: ""};
+        this.addToScene([building])
+    }
+
+    private addToScene(buildings: Building[]) {
+        for (const building of buildings) {
+            const {uid, lng, lat} = building;
+            const htmlElement = this.createHtmlElement();
+            const label = new CSS2DObject(htmlElement)
+
+            const center = MAPBOX.MercatorCoordinate.fromLngLat(
+                {...this.center},
+                0
+            );
+
+            const units = center.meterInMercatorCoordinateUnits();
+
+            const model = MAPBOX.MercatorCoordinate.fromLngLat({lng, lat}, 0);
+            model.x /= units;
+            model.y /= units;
+            center.x /= units;
+            center.y /= units;
+
+            label.position.set(model.x - center.x, 0, model.y - center.y)
+
+            this.components.scene.get().add(label)
+            this.labels[uid] = label;
+
+        }
+    }
+
+    private createHtmlElement() {
+        const div = document.createElement("div")
+        div.textContent = "🏢"
+        div.classList.add("thumbnail")
+        return div;
     }
 
     private setupScene() {
@@ -38,9 +93,9 @@ export class MapScene {
     }
 
     private createRenderer(config: GisParameters) {
-        const map = this.createMap(config);
+        //const map = this.createMap(config);
         const coords = this.getCoordinates(config);
-        return new OBC.MapboxRenderer(this.components, map, coords)
+        return new OBC.MapboxRenderer(this.components, this.map, coords)
     }
 
     private getCoordinates(config: GisParameters) {
@@ -49,15 +104,22 @@ export class MapScene {
     }
 
     private createMap(config: GisParameters) {
-        return new MAPBOX.Map({
+        const map =  new MAPBOX.Map({
             ...config,
             style:this.style,
             antialias: true
         })
+        map.on("contextmenu", this.storeMousePosition) //when user right clicks on map store the position
+        return map;
+    }
+
+    private storeMousePosition = (event: MAPBOX.MapMouseEvent) => {
+        this.clickedCoordinates = {...event.lngLat}
     }
 
     private getConfig(container: HTMLDivElement) {
         const center = [-0.139203, 51.499702] as [number, number];
+        this.center = {lng: center[0], lat: center[1]}
         return {
             container,
             accessToken: MAPBOX_KEY,

@@ -17,5 +17,8 @@ export const executeCore = (action: Action) => {
     if (action.type === "REMOVE_MAP") {
         mapHandler.remove()
     }
+    if (action.type === "ADD_BUILDING") {
+        mapHandler.addBuilding(action.payload)
+    }
 
 }
