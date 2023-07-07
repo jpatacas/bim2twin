@@ -6,6 +6,7 @@ import { Building, GisParameters , LngLat} from "../../types";
 import { User } from "firebase/auth";
 import { CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer";
 import { MapDatabase } from "./map-database";
+import { Events } from "../../middleware/event-handler";
 
 export class MapScene {
     private components = new OBC.Components();
@@ -15,8 +16,10 @@ export class MapScene {
     private clickedCoordinates: LngLat = {lat: 0, lng: 0}
     private labels: {[id:string]: CSS2DObject} = {}
     private database = new MapDatabase();
+    private events: Events;
 
-    constructor(container: HTMLDivElement) {
+    constructor(container: HTMLDivElement, events: Events) {
+        this.events = events;
         const configuration = this.getConfig(container);
         this.map = this.createMap(configuration)
         this.initializeComponenents(configuration)
@@ -53,7 +56,7 @@ export class MapScene {
     private addToScene(buildings: Building[]) {
         for (const building of buildings) {
             const {uid, lng, lat} = building;
-            const htmlElement = this.createHtmlElement();
+            const htmlElement = this.createHtmlElement(uid);
             const label = new CSS2DObject(htmlElement)
 
             const center = MAPBOX.MercatorCoordinate.fromLngLat(
@@ -71,22 +74,18 @@ export class MapScene {
 
             label.position.set(model.x - center.x, 0, model.y - center.y)
 
-            // const scene = this.components.scene?.get(); // Check if scene is defined
-            // if (scene) {
-            //   scene.add(label);
-            // } else {
-            //   console.error("Scene is not defined.");
-            // }
-
             this.components.scene.get().add(label)
             this.labels[uid] = label;
 
         }
     }
 
-    private createHtmlElement() {
+    private createHtmlElement(id: string) {
         const div = document.createElement("div")
         div.textContent = "🏢"
+        div.onclick = () => {
+            this.events.trigger({type: "OPEN_BUILDING", payload: id})
+        }
         div.classList.add("thumbnail")
         return div;
     }
