@@ -10,8 +10,8 @@ export const executeCore = (action: Action) => {
         userAuth.logout()
     }
     if (action.type === "START_MAP") {
-        const {user, container } = action.payload
-        mapHandler.start(container)
+        const {container, user } = action.payload
+        mapHandler.start(container, user)
         
     }
     if (action.type === "REMOVE_MAP") {

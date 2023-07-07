@@ -5,11 +5,12 @@ export const mapHandler = {
 
     viewer: null as MapScene | null,
 
-    start(container: HTMLDivElement) {
+    async start(container: HTMLDivElement, user: User) {
         if(!this.viewer) {
 
             console.log("Map started!")
             this.viewer = new MapScene(container)
+            await this.viewer.getAllBuildings(user)
         }
     },
     remove() {
@@ -21,9 +22,9 @@ export const mapHandler = {
         }
     },
 
-    addBuilding(user: User) {
+    async addBuilding(user: User) {
         if (this.viewer) {
-            this.viewer.addBuilding(user)
+           await this.viewer.addBuilding(user)
         }
     }
 }

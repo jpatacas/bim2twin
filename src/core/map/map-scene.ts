@@ -5,6 +5,7 @@ import { MAPBOX_KEY } from "../../config";
 import { Building, GisParameters , LngLat} from "../../types";
 import { User } from "firebase/auth";
 import { CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer";
+import { MapDatabase } from "./map-database";
 
 export class MapScene {
     private components = new OBC.Components();
@@ -13,6 +14,7 @@ export class MapScene {
     private center: LngLat = {lat: 0, lng: 0}
     private clickedCoordinates: LngLat = {lat: 0, lng: 0}
     private labels: {[id:string]: CSS2DObject} = {}
+    private database = new MapDatabase();
 
     constructor(container: HTMLDivElement) {
         const configuration = this.getConfig(container);
@@ -33,10 +35,18 @@ export class MapScene {
         this.labels = {}
     }
 
-    addBuilding(user: User) {
+    async getAllBuildings(user:User) {
+        const buildings = await this.database.getBuildings(user)
+        if (this.components) {
+            this.addToScene(buildings)
+        }
+    }
+
+    async addBuilding(user: User) {
         const {lat, lng} = this.clickedCoordinates;
         const userID = user.uid;
         const building = {userID, lat, lng, uid: ""};
+        building.uid = await this.database.add(building)
         this.addToScene([building])
     }
 
@@ -60,6 +70,13 @@ export class MapScene {
             center.y /= units;
 
             label.position.set(model.x - center.x, 0, model.y - center.y)
+
+            // const scene = this.components.scene?.get(); // Check if scene is defined
+            // if (scene) {
+            //   scene.add(label);
+            // } else {
+            //   console.error("Scene is not defined.");
+            // }
 
             this.components.scene.get().add(label)
             this.labels[uid] = label;
