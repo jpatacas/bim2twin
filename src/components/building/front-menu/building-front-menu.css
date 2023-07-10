@@ -1,0 +1,17 @@
+.front-menu {
+    position: absolute;
+    height: 80vh;
+    min-width: 60%;
+  }
+  
+  .front-menu-content {
+    margin: 1rem;
+  }
+  
+  .front-menu-header {
+    display: flex;
+  }
+  
+  .front-menu-header > Button {
+    margin-left: auto;
+  }

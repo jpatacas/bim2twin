@@ -1,9 +1,11 @@
 import { FC, useState } from "react"; //to define a component
-import { Button, Box } from "@mui/material";
+import { Box , CssBaseline} from "@mui/material";
 import { useAppContext } from "../../middleware/context-provider";
 import { Navigate } from "react-router-dom";
 import { BuildingTopBar } from "./building-topbar";
 import {BuildingDrawer} from "./building-drawer"
+import { getDrawerHeader } from "./mui-utils";
+import { BuildingFrontMenu } from "./front-menu/building-front-menu";
 
 export const BuildingViewer: FC = () => {
   //menus visibility
@@ -27,22 +29,36 @@ export const BuildingViewer: FC = () => {
     setFrontOpen(active)
   }
 
+const DrawerHeader = getDrawerHeader();  
+
   return (
-    <>
-      <Box sx={{ display: "flex" }}></Box>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+
       <BuildingTopBar
         width={width}
         open={sideOpen}
         onOpen={() => toggleDrawer(true)}
       />
 
-      <BuildingDrawer 
+      <BuildingDrawer
         width={width}
         open={sideOpen}
-        onClose ={ () => toggleDrawer(false)}
-        onToggleMenu = {() => toggleFrontMenu(true)}
-
+        onClose={() => toggleDrawer(false)}
+        onToggleMenu={() => toggleFrontMenu(true)}
       />
-    </>
+
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <DrawerHeader />
+
+        <BuildingFrontMenu
+          onToggleMenu={() => toggleFrontMenu(false)}
+          open={frontOpen}
+          mode="BuildingInfo"
+        />
+
+        <h1>Hello building viewer!</h1>
+      </Box>
+    </Box>
   );
 }; //FC type - functional component
