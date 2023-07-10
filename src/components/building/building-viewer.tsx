@@ -3,6 +3,7 @@ import { Button, Box } from "@mui/material";
 import { useAppContext } from "../../middleware/context-provider";
 import { Navigate } from "react-router-dom";
 import { BuildingTopBar } from "./building-topbar";
+import {BuildingDrawer} from "./building-drawer"
 
 export const BuildingViewer: FC = () => {
   //menus visibility
@@ -21,6 +22,11 @@ export const BuildingViewer: FC = () => {
     setSideOpen(active);
   };
 
+  //for propertiees, floor plans. building metadata
+  const toggleFrontMenu = (active: boolean) => {
+    setFrontOpen(active)
+  }
+
   return (
     <>
       <Box sx={{ display: "flex" }}></Box>
@@ -28,6 +34,14 @@ export const BuildingViewer: FC = () => {
         width={width}
         open={sideOpen}
         onOpen={() => toggleDrawer(true)}
+      />
+
+      <BuildingDrawer 
+        width={width}
+        open={sideOpen}
+        onClose ={ () => toggleDrawer(false)}
+        onToggleMenu = {() => toggleFrontMenu(true)}
+
       />
     </>
   );
