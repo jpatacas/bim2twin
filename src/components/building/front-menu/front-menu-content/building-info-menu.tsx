@@ -15,7 +15,7 @@ export const BuildingInfoMenu: FC<{
   }
 
   return ( <Box>
-    <h1>building i</h1>
+    <h1>Building info</h1>
   </Box>)
 
 };
