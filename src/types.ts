@@ -14,6 +14,12 @@ export interface Building {
     lat: number;
     lng: number;
     name: string;
+    models: Model[];
+}
+
+export interface Model {
+    name: string;
+    id:string;
 }
 
 export interface LngLat {
