@@ -16,6 +16,10 @@ export const BuildingViewer: FC = () => {
   // const [state,dispatch] = useAppContext()
   const [{ user, building }] = useAppContext();
 
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
   if (!building) {
     return <Navigate to={"/map"} />;
   }

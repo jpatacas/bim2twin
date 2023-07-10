@@ -9,7 +9,7 @@ export type FrontMenuMode = "BuildingInfo"; // if mode == properties, display pr
 export const BuildingFrontMenu: FC<{
   mode: FrontMenuMode;
   open: boolean;
-  onToggleMenu: (active: boolean) => void;
+  onToggleMenu: () => void;
 }> = ({ mode, open, onToggleMenu }) => {
   if (!open) {
     return <></>;
@@ -30,7 +30,7 @@ export const BuildingFrontMenu: FC<{
       <CardContent>
         <div className="front-menu-header">
           <h2>{title}</h2>
-          <Button onClick={() => onToggleMenu(false)}>
+          <Button onClick={() => onToggleMenu()}>
             <CloseIcon />
           </Button>
         </div>
