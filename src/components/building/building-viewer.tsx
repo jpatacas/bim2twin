@@ -1,25 +1,34 @@
-import { FC } from "react"; //to define a component
-import { Button } from "@mui/material";
+import { FC, useState } from "react"; //to define a component
+import { Button, Box } from "@mui/material";
 import { useAppContext } from "../../middleware/context-provider";
 import { Navigate } from "react-router-dom";
+import { BuildingTopBar } from "./building-topbar";
+
 export const BuildingViewer: FC = () => {
+  //menus visibility
+  const [sideOpen, setSideOpen] = useState(false);
+  const [frontOpen, setFrontOpen] = useState(false);
+  const [width] = useState(240); //from MUI
 
-    const [state,dispatch] = useAppContext()
-    const {building} = state;
+  // const [state,dispatch] = useAppContext()
+  const [{ user, building }] = useAppContext();
 
-    const onCloseBuilding = () => {
-        dispatch({ type: "CLOSE_BUILDING" });
+  if (!building) {
+    return <Navigate to={"/map"} />;
+  }
 
-    }
-
-    if (!building) {
-        return <Navigate to={"/map"} />
-    }
+  const toggleDrawer = (active: boolean) => {
+    setSideOpen(active);
+  };
 
   return (
     <>
-      <h1>hello building viewer!</h1>
-      <Button onClick= {onCloseBuilding}>Close building</Button>
+      <Box sx={{ display: "flex" }}></Box>
+      <BuildingTopBar
+        width={width}
+        open={sideOpen}
+        onOpen={() => toggleDrawer(true)}
+      />
     </>
   );
 }; //FC type - functional component
