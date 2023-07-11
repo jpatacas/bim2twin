@@ -1,7 +1,8 @@
 .front-menu {
     position: absolute;
     height: 80vh;
-    min-width: 30%;
+    min-width: 30rem;
+    z-index: 1;
   }
   
   .front-menu-content {

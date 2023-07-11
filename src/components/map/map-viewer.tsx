@@ -29,7 +29,7 @@ export const MapViewer: FC = () => {
       dispatch({ type: "START_MAP", payload: { container, user } }); // need user to load all buildings that belong to this user
     }
 
-    //called when component is destroyed
+    // //called when component is destroyed - removing this, map not removed when leave map page?
     return () => {
       dispatch({ type: "REMOVE_MAP" });
     };
