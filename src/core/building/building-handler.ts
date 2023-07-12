@@ -23,5 +23,11 @@ export const buildingHandler = {
             throw new Error("Building viewer is not active!")
         }
         return this.viewer.convertIfcToFragments(ifc)
+    },
+
+    async deleteModel(id:string) {
+        if (this.viewer) {
+            await this.viewer.database.deleteModel(id);
+        }
     }
 }
