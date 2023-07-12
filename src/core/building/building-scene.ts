@@ -12,6 +12,11 @@ export class BuildingScene {
     private fragments: OBC.Fragments;
     private sceneEvents : {name: any; action: any}[] = [];
 
+    get container() {
+      const domElement = this.components.renderer.get().domElement;
+      return domElement.parentElement as HTMLDivElement;
+    }
+
     constructor(container: HTMLDivElement, building: Building) {
         this.components = new OBC.Components();
 

@@ -1,4 +1,4 @@
-# IFC.js React app
+# IFC.js + Mapbox React app
 
 ## Available Scripts
 
@@ -12,6 +12,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ## Firebase configuration
 
 - add a `firebase-conf.js` file in `/src` with your `firebaseConfig` data
-- setup authentication
+
+- setup authentication using google and storage
 
 - CORS problem [solution](https://stackoverflow.com/a/58613527)
