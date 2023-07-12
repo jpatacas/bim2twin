@@ -30,6 +30,13 @@ export function getSidebarTools(
       }
     },
     {
+      name: "Delete building",
+      icon: <DeleteIcon />,
+      action: () => {
+        dispatch({type: "DELETE_BUILDING", payload: state.building})
+      }
+    },
+    {
       name: "Back to map",
       icon: <MapIcon />,
       action: () => {
@@ -41,14 +48,7 @@ export function getSidebarTools(
       icon: <LogoutIcon />,
       action: () => {
         dispatch({type: "LOGOUT"})
-      }
-    },
-    {
-      name: "Delete building",
-      icon: <DeleteIcon />,
-      action: () => {
-        dispatch({type: "DELETE_BUILDING", payload: state.building})
-      }
+      },
     },
   ];
 }

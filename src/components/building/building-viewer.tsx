@@ -8,6 +8,7 @@ import { getDrawerHeader } from "./side-menu/mui-utils"
 import { BuildingFrontMenu } from "./front-menu/building-front-menu";
 import { FrontMenuMode } from "./types";
 import { BuildingViewport } from "./viewport/building-viewport";
+import { BuildingBottomMenu } from "./bottom-menu/building-bottom-menu";
 
 export const BuildingViewer: FC = () => {
   //menus visibility
@@ -62,13 +63,15 @@ const DrawerHeader = getDrawerHeader();
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
 
+        <BuildingViewport /> 
         <BuildingFrontMenu
           onToggleMenu={() => toggleFrontMenu(false)}
           open={frontOpen}
           mode={frontMenu}
         />
 
-        <BuildingViewport /> 
+        <BuildingBottomMenu/>
+
       </Box>
     </Box>
   );
