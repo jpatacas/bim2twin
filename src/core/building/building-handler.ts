@@ -44,4 +44,15 @@ export const buildingHandler = {
           this.viewer.explode(active);
         }
       },
+      toggleClippingPlanes(active: boolean) {
+        if (this.viewer) {
+          this.viewer.toggleClippingPlanes(active);
+        }
+      },
+    
+      toggleDimensions(active: boolean) {
+        if (this.viewer) {
+          this.viewer.toggleDimensions(active);
+        }
+      },
 }

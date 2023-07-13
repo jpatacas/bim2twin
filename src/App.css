@@ -27,3 +27,26 @@
     background-color: rgb(230, 230, 230);
     cursor: pointer;
 }
+
+.ifcjs-dimension-label {
+    background-color: black;
+    font-family: sans-serif;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    pointer-events: all;
+    transition: background-color 200ms ease-in-out;
+  }
+  
+  .ifcjs-dimension-label:hover {
+    background-color: grey;
+  }
+  
+  .ifcjs-dimension-preview {
+    background-color: #ffffff;
+    width: 2rem;
+    height: 2rem;
+    opacity: 0.3;
+    padding: 8px;
+    border-radius: 100%;
+  }
