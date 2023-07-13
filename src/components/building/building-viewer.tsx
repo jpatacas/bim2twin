@@ -33,13 +33,12 @@ export const BuildingViewer: FC = () => {
   };
 
   //for propertiees, floor plans. building metadata
-  const toggleFrontMenu = (active: boolean, mode?: FrontMenuMode) => {
-
+  const toggleFrontMenu = (active = !frontOpen, mode?: FrontMenuMode) => {
     if (mode) {
-      setFrontMenu(mode)
+      setFrontMenu(mode);
     }
-    setFrontOpen(active)
-  }
+    setFrontOpen(active);
+  };
 
 const DrawerHeader = getDrawerHeader();  
 

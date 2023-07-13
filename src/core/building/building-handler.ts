@@ -38,5 +38,10 @@ export const buildingHandler = {
             this.viewer = new BuildingScene(container, building);
 
         }
-     }
+     },
+     explode(active: boolean) {
+        if (this.viewer) {
+          this.viewer.explode(active);
+        }
+      },
 }

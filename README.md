@@ -15,4 +15,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 - setup authentication using google and storage
 
-- CORS problem [solution](https://stackoverflow.com/a/58613527)
+- Configuring CORS using [Google Cloud console](https://stackoverflow.com/a/58613527)
