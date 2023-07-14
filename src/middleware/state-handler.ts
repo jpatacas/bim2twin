@@ -11,5 +11,8 @@ export const reducer = (state: State, action: Action) => {
     if (action.type === "CLOSE_BUILDING") {
         return {...state, building: null }
     }
+    if (action.type === "UPDATE_FLOORPLANS") {
+        return { ...state, floorplans: action.payload };
+    }
     return {...state}
 }

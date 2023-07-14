@@ -1,26 +1,33 @@
 import * as OBC from "openbim-components";
-import { Building } from "../../types";
-import { BuildingDatabase } from "./building-database";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import * as THREE from "three";
 import { downloadZip } from "client-zip";
 import { unzip } from "unzipit";
 
+import { Building } from "../../types";
+import { BuildingDatabase } from "./building-database";
+import { Events } from "./../../middleware/event-handler";
+import { Floorplan } from "./../../types";
+
 export class BuildingScene {
   database = new BuildingDatabase();
 
-  private floorplans: { name: string; id: string }[] = [];
+  private floorplans: Floorplan[] = [];
   private components: OBC.Components;
   private fragments: OBC.Fragments;
-  private sceneEvents: { name: any; action: any }[] = [];
+
   private whiteMaterial = new THREE.MeshBasicMaterial({ color: "white" });
+  
+  private sceneEvents: { name: any; action: any }[] = [];
+  private events: Events;
 
   get container() {
     const domElement = this.components.renderer.get().domElement;
     return domElement.parentElement as HTMLDivElement;
   }
 
-  constructor(container: HTMLDivElement, building: Building) {
+  constructor(container: HTMLDivElement, building: Building, events: Events) {
+    this.events = events;
     this.components = new OBC.Components();
 
     const sceneComponent = new OBC.SimpleScene(this.components);
@@ -226,14 +233,14 @@ export class BuildingScene {
     return file as File;
   }
 
-  toggleFloorplan(active: boolean) {
+  toggleFloorplan(active: boolean, floorplan?: Floorplan) {
     const floorNav = this.getFloorNav();
     if (!this.floorplans.length) return;
-    if (active) {
+    if (active && floorplan) {
       this.toggleGrid(false);
       this.toggleEdges(true);
-      const first = this.floorplans[0];
-      floorNav.goTo(first.id);
+      floorNav.goTo(floorplan.id);
+
       this.fragments.materials.apply(this.whiteMaterial);
     } else {
       this.toggleGrid(true);
@@ -326,6 +333,11 @@ export class BuildingScene {
             point: new THREE.Vector3(0, elevation, 0),
           });
         }
+
+        this.events.trigger({
+          type: "UPDATE_FLOORPLANS",
+          payload: this.floorplans,
+        });
       }
 
       // Load all the fragments within this zip file
