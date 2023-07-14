@@ -1,6 +1,6 @@
 import { FC } from "react"; //to define a component
 import { Navigate } from "react-router-dom";
-import { Box, Button, Typography  } from "@mui/material";
+import { Box, Button  } from "@mui/material";
 import { useAppContext } from "../../middleware/context-provider";
 import "./user-styles.css";
 //import {getApp} from "firebase/app"
