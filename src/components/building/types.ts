@@ -1,1 +1,5 @@
-export type FrontMenuMode = "BuildingInfo" | "ModelList"; // if mode == properties, display properties etc...
+export type FrontMenuMode =
+  | "BuildingInfo"
+  | "ModelList"
+  | "Properties"
+  | "Floorplans";
