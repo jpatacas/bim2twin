@@ -8,3 +8,15 @@
 .wide-button {
   width: 100%;
 }
+
+.value-pair {
+  display: flex;
+}
+
+.value-pair > *:first-child {
+  font-weight: bold;
+}
+
+.value-pair > *:nth-child(3) {
+  margin-left: 1rem;
+}
