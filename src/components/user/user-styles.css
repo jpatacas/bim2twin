@@ -1,0 +1,24 @@
+.landing-logo {
+    max-width: 8rem;
+    margin: 0.5rem auto 2rem auto;
+    animation: logo-spin 8s infinite 0s cubic-bezier(0.38, 0.01, 0, 0.99);
+    display: block;
+  }
+  
+  @keyframes logo-spin {
+    0% {
+      transform: rotate(0);
+    }
+    25% {
+      transform: rotate(90deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    75% {
+      transform: rotate(270deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

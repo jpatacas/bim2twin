@@ -1,7 +1,8 @@
 import { FC } from "react"; //to define a component
-import { useAppContext } from "../../middleware/context-provider";
-import { Button } from "@mui/material";
 import { Navigate } from "react-router-dom";
+import { Box, Button, Typography  } from "@mui/material";
+import { useAppContext } from "../../middleware/context-provider";
+import "./user-styles.css";
 //import {getApp} from "firebase/app"
 
 export const LoginForm: FC = () => {
@@ -18,8 +19,23 @@ export const LoginForm: FC = () => {
   }
 
   return (
-    <h1>
-        <Button variant= "outlined"  onClick={onLogin}>Login</Button>
-    </h1>
+    <Box
+    sx={{
+      marginTop: 8,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    }}
+  >
+    <img className="landing-logo" alt="ifcjs logo" src="ifcjs-logo.png" />
+
+    <Button variant="outlined" onClick={onLogin}>
+      Login
+    </Button>
+  </Box>
+
+    // <h1>
+    //     <Button variant= "outlined"  onClick={onLogin}>Login</Button>
+    // </h1>
   );
 }; //FC type - functional component
