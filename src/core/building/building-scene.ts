@@ -1,15 +1,19 @@
 import * as OBC from "openbim-components";
 import { Building } from "../../types";
 import { BuildingDatabase } from "./building-database";
+import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import * as THREE from "three";
 import { downloadZip } from "client-zip";
 import { unzip } from "unzipit";
 
 export class BuildingScene {
   database = new BuildingDatabase();
+
+  private floorplans: { name: string; id: string }[] = [];
   private components: OBC.Components;
   private fragments: OBC.Fragments;
   private sceneEvents: { name: any; action: any }[] = [];
+  private whiteMaterial = new THREE.MeshBasicMaterial({ color: "white" });
 
   get container() {
     const domElement = this.components.renderer.get().domElement;
@@ -38,7 +42,8 @@ export class BuildingScene {
       container
     );
 
-    this.components.camera = new OBC.SimpleCamera(this.components);
+    const camera = new OBC.OrthoPerspectiveCamera(this.components);
+    this.components.camera = camera;
     this.components.raycaster = new OBC.SimpleRaycaster(this.components);
     this.components.init();
 
@@ -47,6 +52,15 @@ export class BuildingScene {
 
     const clipper = new OBC.EdgesClipper(this.components, OBC.EdgesPlane);
     this.components.tools.add(clipper);
+
+    const thinLineMaterial = new LineMaterial({
+      color: 0x000000,
+      linewidth: 0.001,
+    });
+
+    clipper.styles.create("thin_lines", [], thinLineMaterial);
+    const floorNav = new OBC.PlanNavigator(clipper, camera);
+    this.components.tools.add(floorNav);
 
     const grid = new OBC.SimpleGrid(this.components);
     this.components.tools.add(grid);
@@ -77,6 +91,7 @@ export class BuildingScene {
   dispose() {
     this.toggleEvents(false);
     this.components.dispose();
+    this.whiteMaterial.dispose();
     (this.components as any) = null;
     (this.fragments as any) = null;
   }
@@ -102,16 +117,6 @@ export class BuildingScene {
     ];
     this.toggleEvents(true);
   }
-
-  // private toggleEvents(active: boolean) {
-  //   for (const event of this.sceneEvents) {
-  //     if (active) {
-  //       window.addEventListener(event.name, event.action);
-  //     } else {
-  //       window.removeEventListener(event.name, event.action);
-  //     }
-  //   }
-  // }
 
   private toggleEvents(active: boolean) {
     for (const event of this.sceneEvents) {
@@ -155,8 +160,18 @@ export class BuildingScene {
     }
   };
 
+  private toggleGrid(visible: boolean) {
+    const grid = this.components.tools.get("SimpleGrid") as OBC.SimpleGrid;
+    const mesh = grid.get();
+    mesh.visible = visible;
+  }
+
   private getClipper() {
     return this.components.tools.get("EdgesClipper") as OBC.EdgesClipper;
+  }
+
+  private getFloorNav() {
+    return this.components.tools.get("PlanNavigator") as OBC.PlanNavigator;
   }
 
   private getDimensions() {
@@ -211,6 +226,23 @@ export class BuildingScene {
     return file as File;
   }
 
+  toggleFloorplan(active: boolean) {
+    const floorNav = this.getFloorNav();
+    if (!this.floorplans.length) return;
+    if (active) {
+      this.toggleGrid(false);
+      this.toggleEdges(true);
+      const first = this.floorplans[0];
+      floorNav.goTo(first.id);
+      this.fragments.materials.apply(this.whiteMaterial);
+    } else {
+      this.toggleGrid(true);
+      this.toggleEdges(false);
+      this.fragments.materials.reset();
+      floorNav.exitPlanView();
+    }
+  }
+
   private async serializeFragments(model: OBC.FragmentGroup) {
     const files = [];
     for (const frag of model.fragments) {
@@ -249,12 +281,52 @@ export class BuildingScene {
     return downloadZip(files).blob();
   }
 
+  private toggleEdges(visible: boolean) {
+    const edges = Object.values(this.fragments.edges.edgesList);
+    const scene = this.components.scene.get();
+    for (const edge of edges) {
+      if (visible) scene.add(edge);
+      else edge.removeFromParent();
+    }
+  }
+
   private async loadAllModels(building: Building) {
     const buildingsURLs = await this.database.getModels(building);
     for (const url of buildingsURLs) {
       const { entries } = await unzip(url);
 
       const fileNames = Object.keys(entries);
+
+      const allTypes = await entries["all-types.json"].json();
+      const modelTypes = await entries["model-types.json"].json();
+      const levelsProperties = await entries["levels-properties.json"].json();
+      const levelsRelationship = await entries[
+        "levels-relationship.json"
+      ].json();
+
+      // Set up floorplans
+
+      const levelOffset = 1.5;
+      const floorNav = this.getFloorNav();
+
+      if (this.floorplans.length === 0) {
+        for (const levelProps of levelsProperties) {
+          const elevation = levelProps.SceneHeight + levelOffset;
+
+          this.floorplans.push({
+            id: levelProps.expressID,
+            name: levelProps.Name.value,
+          });
+
+          // Create floorplan
+          await floorNav.create({
+            id: levelProps.expressID,
+            ortho: true,
+            normal: new THREE.Vector3(0, -1, 0),
+            point: new THREE.Vector3(0, elevation, 0),
+          });
+        }
+      }
 
       // Load all the fragments within this zip file
 
@@ -268,21 +340,27 @@ export class BuildingScene {
 
         const dataName =
           geometryName.substring(0, geometryName.indexOf(".glb")) + ".json";
+
+        const data = await entries[dataName].json();
+
         const dataBlob = await entries[dataName].blob();
 
         const dataURL = URL.createObjectURL(dataBlob);
 
         const fragment = await this.fragments.load(geometryURL, dataURL);
 
-        // Group items by category and by floor
+        // Set up edges
 
-        const data = await entries[dataName].json();
-        const allTypes = await entries["all-types.json"].json();
-        const modelTypes = await entries["model-types.json"].json();
-        const levelsProperties = await entries["levels-properties.json"].json();
-        const levelsRelationship = await entries[
-          "levels-relationship.json"
-        ].json();
+        const lines = this.fragments.edges.generate(fragment);
+        lines.removeFromParent();
+
+        // Set up clipping edges
+
+        const styles = this.getClipper().styles.get();
+        const thinStyle = styles["thin_lines"];
+        thinStyle.meshes.push(fragment.mesh);
+
+        // Group items by category and by floor
 
         const groups = { category: {}, floor: {} } as any;
 
