@@ -2,13 +2,13 @@ import { FC, useState } from "react"; //to define a component
 import { Box , CssBaseline} from "@mui/material";
 import { useAppContext } from "../../middleware/context-provider";
 import { Navigate } from "react-router-dom";
-import { BuildingTopBar } from "./side-menu/building-topbar";
 import {BuildingDrawer} from "./side-menu/building-drawer"
 import { getDrawerHeader } from "./side-menu/mui-utils"
 import { BuildingFrontMenu } from "./front-menu/building-front-menu";
 import { FrontMenuMode } from "./types";
 import { BuildingViewport } from "./viewport/building-viewport";
 import { BuildingBottomMenu } from "./bottom-menu/building-bottom-menu";
+import { NavBar } from "../navbar/navbar";
 
 export const BuildingViewer: FC = () => {
   //menus visibility
@@ -46,7 +46,7 @@ const DrawerHeader = getDrawerHeader();
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
-      <BuildingTopBar
+      <NavBar
         width={width}
         open={sideOpen}
         onOpen={() => toggleDrawer(true)}

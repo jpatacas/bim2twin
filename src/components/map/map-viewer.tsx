@@ -1,7 +1,8 @@
 import { FC, useRef, useEffect, useState } from "react"; //to define a component
-import { useAppContext } from "../../middleware/context-provider";
 import { Navigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import { useAppContext } from "../../middleware/context-provider";
+import { NavBar } from "../navbar/navbar";
 import "./map-viewer.css"
 
 export const MapViewer: FC = () => {
@@ -50,6 +51,7 @@ export const MapViewer: FC = () => {
 
   return (
     <>
+    <NavBar  open={false} onOpen={() => {}} width={100}/>
       <div onContextMenu={onCreate} className="full-screen" ref={containerRef} />
       {isCreating && (
         <div className="overlay">

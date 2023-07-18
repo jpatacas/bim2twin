@@ -1,65 +1,9 @@
-// import { FC } from "react"; //to define a component
-// import { Navigate } from "react-router-dom";
-// import { Box, Button, Card, CardContent, TextField, Typography } from "@mui/material";
-// import { useAppContext } from "../../middleware/context-provider";
-// import "./user-styles.css";
-// //import {getApp} from "firebase/app"
-
-// export const LoginForm: FC = () => {
-//   const [state, dispatch] = useAppContext();
-
-//   const onLogin = () => {
-//    // console.log("Logging in!");
-//     dispatch({type: "LOGIN"});
-
-//   };
-
-//   if (state.user) {
-//     return <Navigate to="/map"/>
-//   }
-
-//   return (
-
-//     <Card sx={{ maxWidth: 400, margin: "0 auto", marginTop: 30 }}>
-//     <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-//       <img className="landing-logo" alt="ifcjs logo" src="ifcjs-logo.png" />
-
-//       <Typography variant="h5" component="h1" align="center" gutterBottom>
-//         Login
-//       </Typography>
-
-//       <TextField
-//         label="Email"
-//         type="email"
-//         variant="outlined"
-//         margin="normal"
-//         fullWidth
-//         // Add necessary props and event handlers for email input
-//       />
-
-//       <TextField
-//         label="Password"
-//         type="password"
-//         variant="outlined"
-//         margin="normal"
-//         fullWidth
-//         // Add necessary props and event handlers for password input
-//       />
-
-//       <Button variant="contained" color="primary" onClick={onLogin} fullWidth>
-//         Login
-//       </Button>
-//     </CardContent>
-//   </Card>
-
-//   );
-// }; //FC type - functional component
-
 import { FC, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { Box, Button, Card, CardContent, TextField, Typography, Tab, Tabs } from "@mui/material";
+import { Box, Button, Card, CardContent, TextField, Tab, Tabs } from "@mui/material";
 import { useAppContext } from "../../middleware/context-provider";
 import "./user-styles.css";
+import { NavBar } from "../navbar/navbar";
 
 export const LoginForm: FC = () => {
   const [state, dispatch] = useAppContext();
@@ -83,6 +27,8 @@ export const LoginForm: FC = () => {
   }
 
   return (
+    <>
+    <NavBar open={false} onOpen={() => {}} width={100} />
     <Card sx={{ maxWidth: 400, margin: "0 auto", marginTop: 20 }}>
       <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <h1>BIM2TWIN</h1>
@@ -155,5 +101,6 @@ export const LoginForm: FC = () => {
         )}
       </CardContent>
     </Card>
+    </>
   );
 };
