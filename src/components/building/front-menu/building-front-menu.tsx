@@ -37,7 +37,7 @@ export const BuildingFrontMenu: FC<{
   const title = titles[mode];
 
   return (
-    <Card className="front-menu">
+    <Card className="front-menu bottom-right">
       <CardContent>
         <div className="front-menu-header">
           <h2>{title}</h2>

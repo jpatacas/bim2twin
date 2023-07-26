@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
-import { getAppBar } from "../building/side-menu/mui-utils";
+import { getAppBar } from "../utils/mui-utils";
 import { Toolbar, IconButton, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 

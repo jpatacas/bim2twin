@@ -1,6 +1,6 @@
 .front-menu {
     position: absolute;
-    height: 80vh;
+    /* height: 80vh; */
     overflow-y: auto !important;
     min-width: 30rem;
     z-index: 1;
@@ -17,3 +17,5 @@
   .front-menu-header > Button {
     margin-left: auto;
   }
+
+  .bottom-right { position:absolute; bottom:0; right:0; } 

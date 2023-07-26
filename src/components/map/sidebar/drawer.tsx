@@ -4,19 +4,25 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { BuildingSidebar } from "./building-sidebar";
+import { Sidebar } from "./sidebar";
 import { getDrawer, getDrawerHeader } from "../../utils/mui-utils";
-import { FrontMenuMode } from "../types";
+import { FrontMenuMode } from "../../building/types";
 
-export const BuildingDrawer: FC<{
+export const Drawer: FC<{
   open: boolean;
   width: number;
   onToggleMenu: (active?: boolean, mode?: FrontMenuMode) => void;
   onClose: () => void;
+  tools: Array<{
+    name: string;
+    icon: React.ReactNode;
+    action: Function;
+  }>;
+  isCreating: boolean;
 }> = (props) => {
   const theme = useTheme();
 
-  const { open, width: drawerWidth, onClose, onToggleMenu } = props;
+  const { open, width: drawerWidth, onClose, onToggleMenu, tools } = props;
 
   const Drawer = getDrawer(drawerWidth);
   const DrawerHeader = getDrawerHeader();
@@ -32,7 +38,7 @@ export const BuildingDrawer: FC<{
           )}
         </IconButton>
       </DrawerHeader>
-      <BuildingSidebar onToggleMenu={onToggleMenu} open={open} />
+      <Sidebar onToggleMenu={onToggleMenu} open={open} tools={tools}/>
       <Divider />
     </Drawer>
   );

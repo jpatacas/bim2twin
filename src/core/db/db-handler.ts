@@ -1,12 +1,13 @@
 import {
   GoogleAuthProvider,
+  User,
   getAuth,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
 import { Building, Model } from "../../types";
 import { Events } from "../../middleware/event-handler";
-import { getFirestore, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, deleteDoc, doc, updateDoc ,collection, query, where, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
 //import { Action } from "../middleware/actions";
 import { deleteObject, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -72,5 +73,21 @@ export const databaseHandler = {
     await buildingHandler.deleteModels([model.id]);
     await buildingHandler.refreshModels(building, events);
     events.trigger({ type: "UPDATE_BUILDING", payload: building });
+  },
+
+  async getBuildings(user: User): Promise<Building[]> {
+    const dbInstance = getFirestore(getApp());
+    const q = query(collection(dbInstance, "buildings"), where("userID", "==", user.uid));
+
+    return new Promise<Building[]>((resolve) => {
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const result: Building[] = [];
+        snapshot.docs.forEach((doc) => {
+          result.push({ ...(doc.data() as Building), uid: doc.id });
+        });
+        unsubscribe();
+        resolve(result);
+      });
+    });
   },
 };

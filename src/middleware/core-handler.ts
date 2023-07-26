@@ -58,4 +58,13 @@ export const executeCore = async (action: Action, events: Events) => {
         const { active, floorplan } = action.payload;
         return buildingHandler.toggleFloorplan(active, floorplan);
     }
+    if (action.type === "GET_BUILDINGS") {
+        // Assuming you have the current user object from Firebase Auth
+        const user = action.payload;
+        if (user) {
+          return databaseHandler.getBuildings(user);
+        }
+        // Return something or handle the case when the user is not authenticated
+        return null;
+      }
 }
