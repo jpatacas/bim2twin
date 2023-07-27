@@ -46,6 +46,7 @@ export async function getMapTools(
       ),
       action: () => {
         // Do something when the tool is clicked
+        console.log(building.uid)
       },
     }));
 

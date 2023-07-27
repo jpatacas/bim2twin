@@ -1,5 +1,7 @@
 # IFC.js + Mapbox React app
 
+A project exploring the integration of BIM with other data sources such as GIS, documents, etc. for the development of urban digital twins.
+
 ## Available Scripts
 
 In the project directory, you can run:
