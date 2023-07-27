@@ -1,35 +1,34 @@
-import { FC, useRef, useEffect, useState } from "react"; //to define a component
+import { FC, useEffect, useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { useAppContext } from "../../middleware/context-provider";
 import { NavBar } from "../navbar/navbar";
 import "./map-viewer.css";
-import { Drawer } from "./sidebar/drawer";
-import { getMapTools } from "./sidebar/map-tools";
+import { Drawer } from "../map/sidebar/drawer";
+import { getMapTools } from "../map/sidebar/map-tools"; // Import the updated getMapTools function
+import { Tool } from "../../types";
+//import { FrontMenuMode } from "../../building/types";
 
 export const MapViewer: FC = () => {
-  const containerRef = useRef(null); //canvas where mapbox scene will be rendered
+  const containerRef = useRef(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [tools, setTools] = useState<Tool[]>([]); // State to store the tools
 
   const [state, dispatch] = useAppContext();
   const { user, building } = state;
 
-  //menus visibility
-  const [width] = useState(240); //from MUI
+  const [width] = useState(240);
   const [sideOpen, setSideOpen] = useState(false);
 
   const toggleDrawer = (active: boolean) => {
     setSideOpen(active);
   };
 
-  //for propertiees, floor plans. building metadata
   const toggleFrontMenu = () => {};
 
-  
   const onToggleCreate = () => {
     setIsCreating(!isCreating);
   };
-  const tools = getMapTools( dispatch,  isCreating, onToggleCreate);
 
   const onCreate = () => {
     if (isCreating) {
@@ -38,15 +37,31 @@ export const MapViewer: FC = () => {
     }
   };
 
-  //when component starts
+  useEffect(() => {
+    const fetchTools = async () => {
+      if (user) {
+        const userUID = user.uid;
+
+        try {
+          const tools = await getMapTools(dispatch, isCreating, onToggleCreate, user);
+          setTools(tools);
+        } catch (error) {
+          console.error("Error fetching buildings data:", error);
+          setTools([]);
+        }
+      }
+    };
+
+    fetchTools();
+  }, [user]);
+
   useEffect(() => {
     const container = containerRef.current;
     if (container && user) {
-      dispatch({ type: "START_MAP", payload: { container, user } }); // need user to load all buildings that belong to this user
+      dispatch({ type: "START_MAP", payload: { container, user } });
     }
 
-    console.log(state)
-    // //called when component is destroyed - removing this, map not removed when leave map page?
+    // Cleanup function when component is unmounted
     return () => {
       dispatch({ type: "REMOVE_MAP" });
     };
@@ -61,12 +76,6 @@ export const MapViewer: FC = () => {
     return <Navigate to={url} />;
   }
 
-  //passing it using the tools instead
-
-  // const onLogout = () => {
-  //   dispatch({ type: "LOGOUT" });
-  // };
-
   return (
     <>
       <NavBar width={width} open={sideOpen} onOpen={() => toggleDrawer(true)} />
@@ -79,25 +88,15 @@ export const MapViewer: FC = () => {
         isCreating={isCreating}
       />
 
-      <div
-        onContextMenu={onCreate}
-        className="full-screen"
-        ref={containerRef}
-      />
+      <div onContextMenu={onCreate} className="full-screen" ref={containerRef} />
       {isCreating && (
         <div className="overlay">
           <p>Right click to create a new Building or</p>
           <Button onClick={onToggleCreate}>cancel</Button>
         </div>
       )}
-      {/* <div className="gis-button-container">
-        <Button variant="contained" onClick={onToggleCreate}>
-          Create building
-        </Button>
-        <Button variant="contained" onClick={onLogout}>
-          Log out
-        </Button>
-      </div> */}
     </>
   );
-}; //FC type - functional component
+};
+
+
