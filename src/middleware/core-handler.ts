@@ -67,4 +67,8 @@ export const executeCore = async (action: Action, events: Events) => {
         // Return something or handle the case when the user is not authenticated
         return null;
       }
+      if (action.type === "CENTER_MAP") {
+        const {lat, lng} = action.payload
+        return mapHandler.centerMap(lat, lng)
+      }
 }

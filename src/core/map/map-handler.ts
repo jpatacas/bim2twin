@@ -27,5 +27,11 @@ export const mapHandler = {
         if (this.viewer) {
            await this.viewer.addBuilding(user)
         }
+    },
+    centerMap(lat: number, lng: number) {
+        if (this.viewer) {
+            this.viewer.centerMap(lat, lng)
+        }
     }
+
 }

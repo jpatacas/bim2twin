@@ -1,15 +1,24 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import AddBuildingIcon from "@mui/icons-material/DomainAdd";
-import BuildingIcon from '@mui/icons-material/Domain';
+import BuildingIcon from "@mui/icons-material/Domain";
 
 import { Action } from "../../../middleware/actions";
 import { Building, Tool } from "../../../types";
-import { collection, getDocs, getFirestore, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
 import { User } from "firebase/auth";
 
 async function fetchBuildingsData(userUID: string): Promise<Building[]> {
   const dbInstance = getFirestore();
-  const q = query(collection(dbInstance, "buildings"), where("userID", "==", userUID));
+  const q = query(
+    collection(dbInstance, "buildings"),
+    where("userID", "==", userUID)
+  );
 
   const snapshot = await getDocs(q);
 
@@ -39,14 +48,11 @@ export async function getMapTools(
       active: newBuilding ? building.uid === newBuilding.uid : false,
       icon: <BuildingIcon />,
       action: () => {
-        // Do something when the tool is clicked
-        console.log(building.uid);
-
-        // Use the newBuilding here, e.g., to center the view on the newly created building
-        if (newBuilding && newBuilding.uid === building.uid) {
-          // Center the map on the new building's coordinates
-          // dispatch({ type: "CENTER_MAP", payload: { lat: newBuilding.lat, lng: newBuilding.lng } });
-        }
+        dispatch({
+          type: "CENTER_MAP",
+          payload: { lat: building.lat, lng: building.lng },
+        });
+        //}
       },
     }));
 

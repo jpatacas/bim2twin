@@ -146,4 +146,13 @@ export class MapScene {
             buildings: []
         }
     }
+
+    centerMap(lat: number, lng: number) {
+        // Use the Mapbox flyTo method to center the map on the specified location
+        this.map.flyTo({
+            center: [lng, lat],
+            zoom: 15, // Optional, you can adjust the zoom level as needed
+            speed: 1.5, // Optional, adjust the speed of the fly animation
+        });
+    }
 }
