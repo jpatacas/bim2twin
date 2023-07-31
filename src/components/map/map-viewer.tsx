@@ -5,14 +5,13 @@ import { useAppContext } from "../../middleware/context-provider";
 import { NavBar } from "../navbar/navbar";
 import "./map-viewer.css";
 import { Drawer } from "../map/sidebar/drawer";
-import { getMapTools } from "../map/sidebar/map-tools"; // Import the updated getMapTools function
+import { getMapTools } from "../map/sidebar/map-tools";
 import { Tool } from "../../types";
-//import { FrontMenuMode } from "../../building/types";
 
 export const MapViewer: FC = () => {
   const containerRef = useRef(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [tools, setTools] = useState<Tool[]>([]); // State to store the tools
+  const [tools, setTools] = useState<Tool[]>([]);
 
   const [state, dispatch] = useAppContext();
   const { user, building } = state;
@@ -30,20 +29,36 @@ export const MapViewer: FC = () => {
     setIsCreating(!isCreating);
   };
 
-  const onCreate = () => {
+  //need to updae this with the code below, how to fetch the newly created building data?
+  const onCreate = async () => {
     if (isCreating) {
       dispatch({ type: "ADD_BUILDING", payload: user });
       setIsCreating(false);
+
+      //to get the new building in the list of buildigns when it is added (id)
+      if (user ) {
+        //const userUID = user.uid;
+
+        try {
+          const newBuilding = null; // Set this to the newly created building, if applicable
+          const tools = await getMapTools(dispatch, isCreating, onToggleCreate, user, newBuilding);
+          setTools(tools);
+        } catch (error) {
+          console.error("Error fetching buildings data:", error);
+          setTools([]);
+        }
+      }
     }
   };
 
   useEffect(() => {
     const fetchTools = async () => {
-      if (user) {
-        const userUID = user.uid;
+      if (user ) {
+        //const userUID = user.uid;
 
         try {
-          const tools = await getMapTools(dispatch, isCreating, onToggleCreate, user);
+          const newBuilding = null; // Set this to the newly created building, if applicable
+          const tools = await getMapTools(dispatch, isCreating, onToggleCreate, user, newBuilding);
           setTools(tools);
         } catch (error) {
           console.error("Error fetching buildings data:", error);
@@ -98,5 +113,4 @@ export const MapViewer: FC = () => {
     </>
   );
 };
-
 

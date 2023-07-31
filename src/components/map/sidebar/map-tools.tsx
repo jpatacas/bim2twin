@@ -1,16 +1,13 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import AddBuildingIcon from "@mui/icons-material/DomainAdd";
 import BuildingIcon from '@mui/icons-material/Domain';
-import { Action } from "../../../middleware/actions";
 
-//import { FrontMenuMode } from "../types";
+import { Action } from "../../../middleware/actions";
 import { Building, Tool } from "../../../types";
 import { collection, getDocs, getFirestore, query, where } from "firebase/firestore";
 import { User } from "firebase/auth";
 
-///get from db/middleware
-// async getBuildings(user: User) from map-database.ts (core)
-export async function fetchBuildingsData(userUID: string): Promise<Building[]> {
+async function fetchBuildingsData(userUID: string): Promise<Building[]> {
   const dbInstance = getFirestore();
   const q = query(collection(dbInstance, "buildings"), where("userID", "==", userUID));
 
@@ -24,41 +21,41 @@ export async function fetchBuildingsData(userUID: string): Promise<Building[]> {
   return buildings;
 }
 
+// Add an additional parameter newBuilding to the function
 export async function getMapTools(
-  
-    //   state: State,
   dispatch: React.Dispatch<Action>,
-  //   toggleMenu: (active: boolean) => void,
   isCreating: boolean,
   onToggleCreate: () => void,
-  user: User | null
+  user: User | null,
+  newBuilding: Building | null
 ): Promise<Tool[]> {
+  const tools: Tool[] = [];
   if (user) {
     const userUID = user.uid;
     const buildings = await fetchBuildingsData(userUID);
 
-    // ... (rest of the code to create buildingTools)
     const buildingTools = buildings.map((building) => ({
       name: building.uid,
-      active: false,
-      icon: (
-        <BuildingIcon />
-      ),
+      active: newBuilding ? building.uid === newBuilding.uid : false,
+      icon: <BuildingIcon />,
       action: () => {
         // Do something when the tool is clicked
-        console.log(building.uid)
+        console.log(building.uid);
+
+        // Use the newBuilding here, e.g., to center the view on the newly created building
+        if (newBuilding && newBuilding.uid === building.uid) {
+          // Center the map on the new building's coordinates
+          // dispatch({ type: "CENTER_MAP", payload: { lat: newBuilding.lat, lng: newBuilding.lng } });
+        }
       },
     }));
 
-    return [
+    tools.push(
       {
         name: "Create Building",
         active: isCreating,
         icon: <AddBuildingIcon />,
         action: onToggleCreate,
-        // action: () => {
-        //   dispatch({ type: "ADD_BUILDING", payload: state.user });
-        // },
       },
       ...buildingTools,
       {
@@ -68,11 +65,9 @@ export async function getMapTools(
         action: () => {
           dispatch({ type: "LOGOUT" });
         },
-      },
-    ];
-  } else {
-    // If user is not available, return an empty array or handle the case accordingly.
-    return [];
+      }
+    );
   }
-}
 
+  return tools;
+}
