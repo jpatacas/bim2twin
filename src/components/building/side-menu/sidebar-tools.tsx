@@ -6,10 +6,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ModelIcon from '@mui/icons-material/HolidayVillage';
 import FloorplanIcon from "@mui/icons-material/Layers";
 import PropertiesIcon from "@mui/icons-material/Info";
+import EnergyIcon from '@mui/icons-material/ElectricBolt';
 import { Action } from "../../../middleware/actions";
 import { State } from "../../../middleware/state";
 import { FrontMenuMode } from "../types";
 import { Tool } from "../../../types";
+
 
 export function getSidebarTools(
   state: State,
@@ -47,6 +49,14 @@ export function getSidebarTools(
       icon: <PropertiesIcon />,
       action: ({ onToggleMenu }) => {
         onToggleMenu(true, "Properties");
+      },
+    },
+    {
+      name: "Energy",
+      active: false,
+      icon: <EnergyIcon />,
+      action: ({ onToggleMenu }) => {
+        onToggleMenu(true, "Energy");
       },
     },
     {
