@@ -7,7 +7,7 @@
   }
   
   .front-menu-content {
-    margin: 1rem;
+    margin: 0;
   }
   
   .front-menu-header {
@@ -18,4 +18,26 @@
     margin-left: auto;
   }
 
-  .bottom-right { position:absolute; bottom:0; right:0; } 
+  .bottom-right { position:absolute; bottom:1rem; right:1rem; } 
+
+  .plot-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 750px; /* Set the maximum height of the container */
+    overflow: hidden; /* Hide overflow to prevent double scrollbar */
+  }
+  
+  .first-plot {
+    flex: none; /* First plot doesn't grow or shrink */
+  }
+  
+  .scrollable-plots {
+    overflow-y: auto; /* Add vertical scrollbar if content overflows */
+    max-height: 100%; /* Allow scrollable area to take remaining height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
+  
