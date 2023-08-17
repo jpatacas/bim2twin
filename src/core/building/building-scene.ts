@@ -327,7 +327,11 @@ export class BuildingScene {
       const fileNames = Object.keys(entries);
 
       const properties = await entries["properties.json"].json();
+
+      console.log(building)
+      //this.getIfcTotalAreas(url)
       const allTypes = await entries["all-types.json"].json();
+      console.log(allTypes)
       const modelTypes = await entries["model-types.json"].json();
       const levelsProperties = await entries["levels-properties.json"].json();
       const levelsRelationship = await entries[
@@ -433,5 +437,103 @@ export class BuildingScene {
       this.fragments.highlighter.update();
       this.fragments.highlighter.active = true;
     }
+  }
+
+  //get gross floor area
+private async getIfcTotalAreas(model: any) {
+  const slabs = await model.getItemsByType("IfcSlab");
+
+  let totalSlabArea = 0;
+
+  for (let slab of slabs) {
+    let slabProps = await slab.getProperties();
+    console.log(slabProps)
+
+    if (slabProps.PredefinedType === "FLOOR") {
+      let Pset_SlabCommonid =
+        slabProps.psets[slabProps.psets.length - 2].expressID;
+      let Pset_SlabCommonProps = await model.getProperties(Pset_SlabCommonid);
+
+      let isExternal = await model.getProperties(
+        Pset_SlabCommonProps.HasProperties[0].value
+      );
+      let isExternalValue = isExternal.NominalValue.value;
+      let isExternalName = isExternal.Name.value;
+
+      if (isExternalValue === "F" && isExternalName === "IsExternal") {
+        //if isExternal = FALSE
+        let qts = slabProps.psets[slabProps.psets.length - 1].Quantities;
+
+        for (let qty of qts) {
+          let value = await model.getProperties(qty.value);
+
+          if (value.Name.value === "GrossArea") {
+            totalSlabArea += value.AreaValue.value;
+          }
+        }
+      }
+    }
+  }
+}
+
+  //get gross floor area
+  private async getIfcFloorAreas(properties: any) {
+
+    console.log(properties)
+
+    // const slabs = await viewer.IFC.getAllItemsOfType(
+    //   model.modelID,
+    //   IFCSLAB,
+    //   true
+    // );
+
+    // let totalSlabArea = 0;
+
+    // for (let slab of slabs) {
+    //   let slabProps = await viewer.IFC.getProperties(
+    //     model.modelID,
+    //     slab.expressID,
+    //     true,
+    //     false
+    //   );
+
+    //   if (slabProps.PredefinedType.value === "FLOOR") {
+    //     let Pset_SlabCommonid =
+    //       slabProps.psets[slabProps.psets.length - 2].expressID;
+    //     let Pset_SlabCommonProps = await viewer.IFC.getProperties(
+    //       model.modelID,
+    //       Pset_SlabCommonid,
+    //       true,
+    //       false
+    //     );
+
+    //     let isExternal = await viewer.IFC.getProperties(
+    //       model.modelID,
+    //       Pset_SlabCommonProps.HasProperties[0].value,
+    //       true,
+    //       false
+    //     );
+    //     let isExternalValue = isExternal.NominalValue.value;
+    //     let isExternalName = isExternal.Name.value;
+
+    //     if (isExternalValue === "F" && isExternalName === "IsExternal") {
+    //       //if isExternal = FALSE
+    //       let qts = slabProps.psets[slabProps.psets.length - 1].Quantities;
+
+    //       for (let qty of qts) {
+    //         let value = await viewer.IFC.getProperties(
+    //           model.modelID,
+    //           qty.value,
+    //           true,
+    //           false
+    //         );
+
+    //         if (value.Name.value === "GrossArea") {
+    //           totalSlabArea += value.AreaValue.value;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
