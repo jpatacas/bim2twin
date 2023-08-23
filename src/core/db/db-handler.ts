@@ -5,13 +5,14 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { Building, Model } from "../../types";
+import { Building, EnergyData, Model } from "../../types";
 import { Events } from "../../middleware/event-handler";
 import { getFirestore, deleteDoc, doc, updateDoc ,collection, query, where, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
 //import { Action } from "../middleware/actions";
 import { deleteObject, getStorage, ref, uploadBytes } from "firebase/storage";
 import { buildingHandler } from "../building/building-handler";
+import { energyDataHandler } from "./energy-data-handler";
 
 export const databaseHandler = {
   login: () => {
@@ -90,4 +91,17 @@ export const databaseHandler = {
       });
     });
   },
+
+  addEnergyData: async (energyData: EnergyData) => {
+    await energyDataHandler.addEnergyData(energyData);
+  },
+
+  updateEnergyData: async (buildingId: string, energyData: EnergyData) => {
+    await energyDataHandler.updateEnergyData(buildingId, energyData);
+  },
+
+  getEnergyData: async (buildingId: string): Promise<EnergyData[]> => {
+    return await energyDataHandler.getEnergyData(buildingId);
+  },
+
 };

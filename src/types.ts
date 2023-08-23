@@ -43,3 +43,12 @@ export interface Property {
   name: string;
   value: string;
 }
+
+export interface EnergyData {
+  buildingId: string;
+  month: string; 
+  electricity: number;
+  gas: number;
+  solar: number;
+  wind: number;
+}
