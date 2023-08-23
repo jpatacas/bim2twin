@@ -48,7 +48,8 @@ export class MapScene {
     async addBuilding(user: User) {
         const {lat, lng} = this.clickedCoordinates;
         const userID = user.uid;
-        const building = {userID, lat, lng, uid: "", name: "", models: []};
+        const energy = 0;
+        const building = {userID, lat, lng, energy, uid: "", name: "", models: []};
         building.uid = await this.database.add(building)
         this.addToScene([building])
     }

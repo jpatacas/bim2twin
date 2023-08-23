@@ -4,7 +4,7 @@ A project exploring the integration of BIM with other data sources such as GIS, 
 
 Main features:
 - Create projects by user based on location on world map
-- IFC model storage using Firebase (add and delete models)
+- IFC model storage using Firebase (add and delete models for each building)
 - IFC model loading using fragments, including local caching 
 - IFC model viewer including IFC properties menu, floorplans viewer, clipping planes, measurements and explosion tools
 - Basic energy data management by building (using Firebase)

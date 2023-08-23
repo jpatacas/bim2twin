@@ -35,14 +35,16 @@ export const energyDataHandler = {
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       if (data) {
-        energyDataArray.push({
-          buildingId,
-          month: data.month,
-          electricity: data.electricity,
-          gas: data.gas,
-          solar: data.solar,
-          wind: data.wind,
-        });
+        if (buildingId === data.buildingId) {
+          energyDataArray.push({
+            buildingId: data.buildingId,
+            month: data.month,
+            electricity: data.electricity,
+            gas: data.gas,
+            solar: data.solar,
+            wind: data.wind,
+          });
+        }
       }
     });
 
