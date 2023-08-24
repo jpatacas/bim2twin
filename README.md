@@ -1,6 +1,6 @@
 # BIM2TWIN
 
-A project exploring the integration of BIM with other data sources such as GIS, energy data, etc. for the development of urban digital twins.
+A Common Data Environment providing the integration of BIM with other data sources such as GIS, energy data, etc. for the development of urban digital twins.
 
 Main features:
 - Create projects by user based on location on world map
