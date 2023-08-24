@@ -1,12 +1,13 @@
 # BIM2TWIN
 
-A Common Data Environment providing the integration of BIM with other data sources such as GIS, energy data, etc. for the development of urban digital twins.
+A Common Data Environment providing the integration of BIM with other data sources such as GIS, documents, energy data, etc. for the development of urban digital twins.
 
 Main features:
 - Create projects by user based on location on world map
 - IFC model storage using Firebase (add and delete models for each building)
 - IFC model loading using fragments, including local caching 
 - IFC model viewer including IFC properties menu, floorplans viewer, clipping planes, measurements and explosion tools
+- Document management by building using Firebase storage (add and delete documents for each building)
 - Basic energy data management by building (using Firebase)
 
 Technologies used:
