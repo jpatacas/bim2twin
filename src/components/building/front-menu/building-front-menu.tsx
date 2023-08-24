@@ -23,7 +23,6 @@ export const BuildingFrontMenu: FC<{
   }
 
   const content = new Map<FrontMenuMode, any>();
-  //const buildingInfoMenu = <BuildingInfoMenu onToggleMenu={onToggleMenu} />;
   content.set("BuildingInfo", <BuildingInfoMenu onToggleMenu={onToggleMenu} />);
   content.set("ModelList", <ModelListMenu/>);
   content.set("Properties", <PropertiesMenu />);

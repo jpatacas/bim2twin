@@ -44,7 +44,7 @@ export async function getMapTools(
     const buildings = await fetchBuildingsData(userUID);
 
     const buildingTools = buildings.map((building) => ({
-      name: building.name === "" ? "Building" : building.name,
+      name: building.name === "" ? `Building-${Math.random()}` : building.name,
       active: newBuilding ? building.uid === newBuilding.uid : false,
       icon: <BuildingIcon />,
       action: () => {
