@@ -16,9 +16,15 @@ export interface Building {
   energy: number;
   name: string;
   models: Model[];
+  documents: Document[];
 }
 
 export interface Model {
+  name: string;
+  id: string;
+}
+
+export interface Document {
   name: string;
   id: string;
 }

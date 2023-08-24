@@ -25,8 +25,8 @@ export const EnergyMenu: FC = () => {
 
     fetchEnergyData();
   }, []);
-  console.log(energyData)
-  console.log(state)
+  // console.log(energyData)
+  // console.log(state)
 
   return (
     <div className="plot-container">

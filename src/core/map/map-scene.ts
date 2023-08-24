@@ -49,7 +49,7 @@ export class MapScene {
         const {lat, lng} = this.clickedCoordinates;
         const userID = user.uid;
         const energy = 0;
-        const building = {userID, lat, lng, energy, uid: "", name: "", models: []};
+        const building = {userID, lat, lng, energy, uid: "", name: "", models: [], documents: []};
         building.uid = await this.database.add(building)
         this.addToScene([building])
     }

@@ -5,7 +5,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { Building, EnergyData, Model } from "../../types";
+import { Building, EnergyData, Model, Document } from "../../types";
 import { Events } from "../../middleware/event-handler";
 import { getFirestore, deleteDoc, doc, updateDoc ,collection, query, where, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
@@ -102,6 +102,30 @@ export const databaseHandler = {
 
   getEnergyData: async (buildingId: string): Promise<EnergyData[]> => {
     return await energyDataHandler.getEnergyData(buildingId);
+  },
+
+  uploadDocument: async (
+    document: Document,
+    file: File,
+    building: Building,
+    events: Events
+  ) => {
+    const appInstance = getApp();
+    const storageInstance = getStorage(appInstance);
+    const fileRef = ref(storageInstance, document.id);
+    await uploadBytes(fileRef, file);
+    // await buildingHandler.refreshModels(building, events);
+    events.trigger({ type: "UPDATE_BUILDING", payload: building });
+  },
+
+  deleteDocument: async (document: Document, building: Building, events: Events) => {
+    const appInstance = getApp();
+    const storageInstance = getStorage(appInstance);
+    const fileRef = ref(storageInstance, document.id);
+    await deleteObject(fileRef);
+    // await buildingHandler.deleteModels([model.id]);
+    // await buildingHandler.refreshModels(building, events);
+    events.trigger({ type: "UPDATE_BUILDING", payload: building });
   },
 
 };

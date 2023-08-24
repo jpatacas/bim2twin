@@ -3,4 +3,5 @@ export type FrontMenuMode =
   | "ModelList"
   | "Properties"
   | "Floorplans"
-  | "Energy";
+  | "Energy"
+  | "Documents";

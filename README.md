@@ -15,6 +15,7 @@ Technologies used:
 - IFC.js - openbim-components
 - Mapbox
 - Firebase
+- Material UI
 
 ## Setup
 
@@ -28,6 +29,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 - add a `firebase-conf.js` file in `/src` with your `firebaseConfig` data
 
-- setup authentication in Firebase using google and setup storage in Firebase
+- setup authentication in Firebase using google and setup storage in your Firebase project
 
 - Configuring CORS using [Google Cloud console](https://stackoverflow.com/a/58613527)
