@@ -21,7 +21,9 @@ export const ActionList = ["LOGIN",
 "GET_BUILDINGS",
 "CENTER_MAP",
 "GET_ENERGY_DATA",
-"ADD_ENERGY_DATA"
+"ADD_ENERGY_DATA",
+"UPLOAD_DOCUMENT",
+"DELETE_DOCUMENT"
 ] as const;
 
 export type ActionType = typeof ActionList[number]

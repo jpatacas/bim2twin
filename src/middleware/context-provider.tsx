@@ -28,7 +28,7 @@ export const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const events = new Events();
   for (const type of ActionList) {
     events.on(type, (payload: any) => {
-      setState({ type, payload });
+      dispatch({ type, payload });
     });
   }
   return (

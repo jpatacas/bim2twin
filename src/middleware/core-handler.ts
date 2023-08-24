@@ -84,4 +84,12 @@ export const executeCore = async (action: Action, events: Events) => {
     // Optionally, you can refresh the energy data in the component using the provided events
     // Call the relevant event or update the UI as needed
   }
+  if (action.type === "UPLOAD_DOCUMENT") {
+    const { document, file, building } = action.payload;
+    return databaseHandler.uploadModel(document, file, building, events);
+  }
+  if (action.type === "DELETE_DOCUMENT") {
+    const { document, building } = action.payload;
+    return databaseHandler.deleteModel(document, building, events);
+  }
 };
