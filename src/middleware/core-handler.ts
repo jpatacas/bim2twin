@@ -86,10 +86,10 @@ export const executeCore = async (action: Action, events: Events) => {
   }
   if (action.type === "UPLOAD_DOCUMENT") {
     const { document, file, building } = action.payload;
-    return databaseHandler.uploadModel(document, file, building, events);
+    return databaseHandler.uploadDocument(document, file, building, events);
   }
   if (action.type === "DELETE_DOCUMENT") {
     const { document, building } = action.payload;
-    return databaseHandler.deleteModel(document, building, events);
+    return databaseHandler.deleteDocument(document, building, events);
   }
 };

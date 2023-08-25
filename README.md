@@ -17,6 +17,7 @@ Technologies used:
 - Mapbox
 - Firebase
 - Material UI
+- Plotly.js
 
 ## Setup
 

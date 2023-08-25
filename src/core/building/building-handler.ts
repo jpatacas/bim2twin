@@ -27,6 +27,7 @@ export const buildingHandler = {
         return this.viewer.convertIfcToFragments(ifc)
     },
 
+        //this should be renamed for something more generic - using it also to delete documents
     async deleteModels(id:string []) {
         if (this.viewer) {
             await this.viewer.database.deleteModels(id);

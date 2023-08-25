@@ -50,8 +50,10 @@ export const DocumentsMenu : FC = () => {
         const document = newBuilding.documents.find(document => document.id === id)
         if (!document) throw new Error("document not found!")
         newBuilding.documents = newBuilding.documents.filter((document) => document.id !== id)
-        dispatch({ type: "UPDATE_BUILDING", payload: newBuilding });
-        dispatch({type: "DELETE_DOCUMENT", payload: {document, newBuilding}})
+        dispatch({
+          type: "DELETE_DOCUMENT",
+          payload: { building: newBuilding, document },
+        });
       }
 
     return (

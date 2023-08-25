@@ -41,7 +41,16 @@ export const databaseHandler = {
       ids.push(model.id)
     }
     
+    for (const document of building.documents) {
+      const fileRef = ref(storageInstance, document.id)
+      await deleteObject(fileRef)
+      ids.push(document.id)
+    }
+    
+    //this should be renamed for something more generic
     await buildingHandler.deleteModels(ids)
+    //await buildingHandler.deleteDocuments(ids)
+
     events.trigger({ type: "CLOSE_BUILDING" });
   },
 
