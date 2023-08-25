@@ -1,7 +1,7 @@
 .landing-logo {
-    max-width: 8rem;
+    max-width: 23rem;
     margin: 0.5rem auto 2rem auto;
-    animation: logo-spin 8s infinite 0s cubic-bezier(0.38, 0.01, 0, 0.99);
+    /* animation: logo-spin 8s infinite 0s cubic-bezier(0.38, 0.01, 0, 0.99); */
     display: block;
   }
 

@@ -20,7 +20,9 @@
 .env
 firebase-conf.js
 config.js
+/public/bim2twin-logo.PNG
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+

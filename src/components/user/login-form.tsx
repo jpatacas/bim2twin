@@ -31,8 +31,8 @@ export const LoginForm: FC = () => {
     <NavBar open={false} onOpen={() => {}} width={100} />
     <Card sx={{ maxWidth: 400, margin: "0 auto", marginTop: 20 }}>
       <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <h1>BIM2TWIN</h1>
-        <img className="landing-logo" alt="ifcjs logo" src="ifcjs-logo.png" />
+        {/* <h1>BIM2TWIN</h1> */}
+        <img className="landing-logo" alt="ifcjs logo" src="bim2twin-logo.png" />
 
         <Tabs value={activeTab} onChange={handleTabChange} centered>
           <Tab label="Login" />
