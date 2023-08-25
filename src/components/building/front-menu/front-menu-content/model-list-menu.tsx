@@ -71,7 +71,7 @@ export const ModelListMenu: FC = () => {
         <p>This building has no models!</p>
       )}
       <div className="list-item">
-        <Button onClick={onUploadModel}>Upload model</Button>
+        <Button variant="contained" color="primary" onClick={onUploadModel}>Upload model</Button>
       </div>
     </div>
   );

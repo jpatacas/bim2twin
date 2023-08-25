@@ -10,7 +10,7 @@ import { Events } from "../../middleware/event-handler";
 import { getFirestore, deleteDoc, doc, updateDoc ,collection, query, where, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
 //import { Action } from "../middleware/actions";
-import { deleteObject, getStorage, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { buildingHandler } from "../building/building-handler";
 import { energyDataHandler } from "./energy-data-handler";
 
@@ -136,5 +136,16 @@ export const databaseHandler = {
     // await buildingHandler.refreshModels(building, events);
     events.trigger({ type: "UPDATE_BUILDING", payload: building });
   },
+
+  getDocument : async (document: Document) => {
+    const appInstance = getApp();
+    const storageInstance = getStorage(appInstance);
+    const fileRef = ref(storageInstance, document.id);
+    const fileUrl = await getDownloadURL(fileRef);
+    //console.log(fileUrl);
+
+    window.open(fileUrl, "_blank");
+   
+  }
 
 };

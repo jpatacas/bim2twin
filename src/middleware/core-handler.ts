@@ -92,4 +92,8 @@ export const executeCore = async (action: Action, events: Events) => {
     const { document, building } = action.payload;
     return databaseHandler.deleteDocument(document, building, events);
   }
+  if (action.type === "GET_DOCUMENT") {
+    const { document } = action.payload;
+    return databaseHandler.getDocument(document)
+  }
 };

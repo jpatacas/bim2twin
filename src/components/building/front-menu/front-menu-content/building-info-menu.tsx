@@ -74,7 +74,7 @@ export const BuildingInfoMenu: FC<{
       </div>
 
     <div className="list-item">
-      <Button type="submit" className="submit-button">
+      <Button variant="contained" color="primary" type="submit" className="submit-button">
         Update building
       </Button>
     </div>
