@@ -29,7 +29,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Firebase configuration
 
-- add a `firebase-conf.js` file in `/src` with your `firebaseConfig` data
+- add a `config.js` file in `/src` with your `firebaseConfig` data and Mapbox API key
 
 - setup authentication in Firebase using google and setup storage in your Firebase project
 

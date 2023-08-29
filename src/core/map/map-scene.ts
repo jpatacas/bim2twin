@@ -10,7 +10,7 @@ import { Events } from "../../middleware/event-handler";
 
 export class MapScene {
     private components = new OBC.Components();
-    private readonly style = "mapbox://styles/mapbox/light-v10"
+    private readonly style = "mapbox://styles/mapbox/light-v11"
     private map: MAPBOX.Map;
     private center: LngLat = {lat: 0, lng: 0}
     private clickedCoordinates: LngLat = {lat: 0, lng: 0}
